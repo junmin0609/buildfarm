@@ -1,0 +1,339 @@
+[gd_scene format=3 uid="uid://d2fixxb6aahis"]
+
+[ext_resource type="PackedScene" uid="uid://c3player0001" path="res://scenes/player.tscn" id="1_player"]
+[ext_resource type="Script" uid="uid://bur83jodgs3uc" path="res://scripts/debug_grid.gd" id="2_grid"]
+[ext_resource type="Script" uid="uid://8hyt2r4pmlh" path="res://scripts/farm_grid.gd" id="3_farm"]
+[ext_resource type="Script" path="res://scripts/inventory.gd" id="4_inv"]
+[ext_resource type="Script" path="res://scripts/inventory_ui.gd" id="5_inv_ui"]
+[ext_resource type="PackedScene" uid="uid://bshop0001" path="res://scenes/shop.tscn" id="6_shop"]
+[ext_resource type="Script" path="res://scripts/shop_ui.gd" id="7_shop_ui"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hud"]
+bg_color = Color(0.08, 0.11, 0.14, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.35, 0.42, 0.6)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_inv_win"]
+bg_color = Color(0.08, 0.11, 0.14, 0.94)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.28, 0.38, 0.46, 0.8)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shop_win"]
+bg_color = Color(0.08, 0.11, 0.15, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85, 0.65, 0.25, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="main" type="Node2D" unique_id=555046344]
+
+[node name="Inventory" type="Node" parent="."]
+script = ExtResource("4_inv")
+
+[node name="Ground" type="ColorRect" parent="." unique_id=394131544]
+offset_left = -2000.0
+offset_top = -2000.0
+offset_right = 2000.0
+offset_bottom = 2000.0
+mouse_filter = 2
+color = Color(0.30, 0.50, 0.78, 1)
+
+[node name="FarmGrid" type="Node2D" parent="." unique_id=46699153]
+script = ExtResource("3_farm")
+
+[node name="DebugGrid" type="Node2D" parent="." unique_id=275411701]
+script = ExtResource("2_grid")
+
+[node name="Shop" parent="." instance=ExtResource("6_shop")]
+position = Vector2(850, 220)
+
+[node name="Player" parent="." unique_id=1251747093 instance=ExtResource("1_player")]
+position = Vector2(576, 324)
+
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="Panel" type="Panel" parent="HUD"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 280.0
+offset_bottom = 168.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hud")
+
+[node name="DayLabel" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 22.0
+offset_right = 268.0
+offset_bottom = 48.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.98, 0.95, 0.82, 1)
+text = "Day 1 (다음 날: N)"
+
+[node name="ModeLabel" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 48.0
+offset_right = 268.0
+offset_bottom = 74.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.65, 0.88, 1, 1)
+text = "선택 도구: 괭이 [1]"
+
+[node name="HarvestLabel" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 74.0
+offset_right = 268.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.98, 0.85, 0.4, 1)
+text = "작물 보유량: 0"
+
+[node name="MoneyLabel" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 100.0
+offset_right = 268.0
+offset_bottom = 126.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+text = "소지금: 100 G"
+
+[node name="HelpLabel" type="Label" parent="HUD"]
+offset_left = 28.0
+offset_top = 130.0
+offset_right = 268.0
+offset_bottom = 154.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.6, 0.68, 0.72, 0.8)
+theme_override_font_sizes/font_size = 12
+text = "조작: 1~9선택 / I인벤토리 / E상점 / N다음날"
+
+[node name="InventoryUI" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_inv_ui")
+
+[node name="Hotbar" type="Control" parent="HUD/InventoryUI"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -80.0
+offset_right = 280.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="SelectedItemLabel" type="Label" parent="HUD/InventoryUI/Hotbar"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -160.0
+offset_top = -24.0
+offset_right = 160.0
+offset_bottom = 0.0
+grow_horizontal = 2
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.98, 0.95, 0.82, 1)
+theme_override_font_sizes/font_size = 13
+text = "[ 괭이 ]"
+
+[node name="HBox" type="HBoxContainer" parent="HUD/InventoryUI/Hotbar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="InventoryWindow" type="Panel" parent="HUD/InventoryUI"]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -290.0
+offset_top = -155.0
+offset_right = 290.0
+offset_bottom = 155.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_inv_win")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/InventoryUI/InventoryWindow"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="HUD/InventoryUI/InventoryWindow/VBox"]
+layout_mode = 2
+text = "인벤토리 (I: 닫기)"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.98, 0.95, 0.82, 1)
+theme_override_font_sizes/font_size = 15
+
+[node name="GridContainer" type="GridContainer" parent="HUD/InventoryUI/InventoryWindow/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+columns = 9
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+
+[node name="DescLabel" type="Label" parent="HUD/InventoryUI/InventoryWindow/VBox"]
+layout_mode = 2
+text = "아이템을 드래그하여 인벤토리와 핫바 사이를 자유롭게 이동/교환/합치기할 수 있습니다."
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.65, 0.72, 0.78, 0.8)
+theme_override_font_sizes/font_size = 12
+
+[node name="ShopUI" type="Control" parent="HUD"]
+visible = false
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_shop_ui")
+
+[node name="Window" type="Panel" parent="HUD/ShopUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -180.0
+offset_right = 200.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_shop_win")
+
+[node name="VBox" type="VBoxContainer" parent="HUD/ShopUI/Window"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 18.0
+offset_right = -20.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="HUD/ShopUI/Window/VBox"]
+layout_mode = 2
+text = "[ 상  점 ]"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.9, 0.5, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="MoneyLabel" type="Label" parent="HUD/ShopUI/Window/VBox"]
+layout_mode = 2
+text = "보유 금액: 100 G"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.85, 0.3, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="HSeparator1" type="HSeparator" parent="HUD/ShopUI/Window/VBox"]
+layout_mode = 2
+
+[node name="SeedSection" type="VBoxContainer" parent="HUD/ShopUI/Window/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SeedInfoLabel" type="Label" parent="HUD/ShopUI/Window/VBox/SeedSection"]
+layout_mode = 2
+text = "씨앗 (구매: 10 G)  |  보유 수량: 5 개"
+theme_override_colors/font_color = Color(0.9, 0.95, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+
+[node name="BtnHBox" type="HBoxContainer" parent="HUD/ShopUI/Window/VBox/SeedSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Buy1Btn" type="Button" parent="HUD/ShopUI/Window/VBox/SeedSection/BtnHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1개 구매 (10 G)"
+
+[node name="Buy5Btn" type="Button" parent="HUD/ShopUI/Window/VBox/SeedSection/BtnHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "5개 구매 (50 G)"
+
+[node name="HSeparator2" type="HSeparator" parent="HUD/ShopUI/Window/VBox"]
+layout_mode = 2
+
+[node name="CropSection" type="VBoxContainer" parent="HUD/ShopUI/Window/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="CropInfoLabel" type="Label" parent="HUD/ShopUI/Window/VBox/CropSection"]
+layout_mode = 2
+text = "작물 (판매: 20 G)  |  보유 수량: 0 개"
+theme_override_colors/font_color = Color(0.9, 0.95, 0.9, 1)
+theme_override_font_sizes/font_size = 13
+
+[node name="BtnHBox" type="HBoxContainer" parent="HUD/ShopUI/Window/VBox/CropSection"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Sell1Btn" type="Button" parent="HUD/ShopUI/Window/VBox/CropSection/BtnHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1개 판매 (+20 G)"
+
+[node name="SellAllBtn" type="Button" parent="HUD/ShopUI/Window/VBox/CropSection/BtnHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "전부 판매 (+0 G)"
+
+[node name="HSeparator3" type="HSeparator" parent="HUD/ShopUI/Window/VBox"]
+layout_mode = 2
+
+[node name="CloseBtn" type="Button" parent="HUD/ShopUI/Window/VBox"]
+layout_mode = 2
+text = "닫기 (E / Esc)"
